@@ -3,6 +3,7 @@
   "name": "remix-app-template",
   "description": "",
   "license": "",
+  "version": "0.1.0",
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
