@@ -1,3 +1,15 @@
+import type { LinksFunction } from "remix"
+import styleSheet from "../../styles/jokes.css"
+
+export let links: LinksFunction = () => {
+  return [
+    {
+      rel: "stylesheet",
+      href: styleSheet
+    }
+  ]
+}
+
 export default function JokesOutlet() {
   return (
     <div>

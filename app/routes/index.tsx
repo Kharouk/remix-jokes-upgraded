@@ -1,8 +1,6 @@
 import type { LinksFunction } from "remix"
 import styleSheet from "../styles/index.css"
 
-console.log({ styleSheet })
-
 export let links: LinksFunction = () => {
   return [
     {
