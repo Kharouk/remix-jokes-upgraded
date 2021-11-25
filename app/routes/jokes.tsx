@@ -1,6 +1,19 @@
-import { Link, Outlet } from "remix"
-import type { LinksFunction } from "remix"
+import { Link, Outlet, useLoaderData } from "remix"
+import type { LinksFunction, LoaderFunction } from "remix"
+import { db } from "~/utils/db.server"
+import type { Joke } from "@prisma/client"
 import styleSheet from "../styles/jokes.css"
+
+type LoaderData = {
+  jokes: Joke[]
+}
+
+export let loader: LoaderFunction = async () => {
+  let data: LoaderData = {
+    jokes: await db.joke.findMany()
+  }
+  return data
+}
 
 export let links: LinksFunction = () => {
   return [
@@ -12,6 +25,8 @@ export let links: LinksFunction = () => {
 }
 
 export default function JokesPage() {
+  const { jokes } = useLoaderData<LoaderData>()
+
   return (
     <div className="jokes-layout">
       <header className="jokes-header">
@@ -30,11 +45,13 @@ export default function JokesPage() {
             <Link to=".">Get a randomised joke!</Link>
             <p>Look at all these jokes:</p>
             <ul>
-              <li>
-                <Link to="joke-id" prefetch="intent">
-                  Hippoooo
-                </Link>
-              </li>
+              {jokes.map((joke) => (
+                <li key={joke.id}>
+                  <Link prefetch="intent" to={joke.id}>
+                    {joke.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
             <Link to="new" className="button">
               Add a new J🤡KE
