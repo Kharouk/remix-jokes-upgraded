@@ -1,6 +1,6 @@
-import { Outlet } from "remix"
+import { Link, Outlet } from "remix"
 import type { LinksFunction } from "remix"
-import styleSheet from "../../styles/jokes.css"
+import styleSheet from "../styles/jokes.css"
 
 export let links: LinksFunction = () => {
   return [
@@ -14,9 +14,36 @@ export let links: LinksFunction = () => {
 export default function JokesPage() {
   return (
     <div className="jokes-layout">
-      <h1>You got the jokes? I got the jokes!</h1>
-      <main>
-        <Outlet />
+      <header className="jokes-header">
+        <div className="container">
+          <h1 className="home-link">
+            <Link to="/" title="Remiiix Jokes" aria-label="Remix Jokes">
+              <span className="logo">🤡</span>
+              <span className="logo-medium">J🤡KES</span>
+            </Link>
+          </h1>
+        </div>
+      </header>
+      <main className="jokes-main">
+        <div className="container">
+          <div className="jokes-list">
+            <Link to=".">Get a randomised joke!</Link>
+            <p>Look at all these jokes:</p>
+            <ul>
+              <li>
+                <Link to="joke-id" prefetch="intent">
+                  Hippoooo
+                </Link>
+              </li>
+            </ul>
+            <Link to="new" className="button">
+              Add a new J🤡KE
+            </Link>
+          </div>
+          <div className="jokes-outlet">
+            <Outlet />
+          </div>
+        </div>
       </main>
     </div>
   )
