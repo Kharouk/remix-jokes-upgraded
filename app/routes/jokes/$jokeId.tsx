@@ -1,14 +1,23 @@
-import type { FC } from "react"
+import { Link, LoaderFunction, useLoaderData } from "remix"
+import type { Joke } from "@prisma/client"
+import { db } from "../../utils/db.server"
 
-interface JokeIdProps {}
+export let loader: LoaderFunction = async ({ params: { jokeId } }) => {
+  let joke = await db.joke.findUnique({
+    where: { id: jokeId }
+  })
 
-const JokeId: FC<JokeIdProps> = (props) => {
-  console.log({ props })
+  if (!joke) throw new Error("Joke got lost in the mail!")
+  return joke
+}
+
+export default function JokeId() {
+  const joke = useLoaderData<Joke>()
+
   return (
     <div>
-      <h2>What do you call a remixed joke? An old original!</h2>
+      <h2>{joke.content}</h2>
+      <Link to=".">{joke.name} Permalink</Link>
     </div>
   )
 }
-
-export default JokeId

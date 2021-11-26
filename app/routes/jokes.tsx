@@ -5,14 +5,20 @@ import type { Joke } from "@prisma/client"
 import styleSheet from "../styles/jokes.css"
 
 type LoaderData = {
-  jokes: Array<{ id: string; name: string }>
+  jokes: Joke[]
 }
 
 export let loader: LoaderFunction = async () => {
   let data: LoaderData = {
     jokes: await db.joke.findMany({
       take: 5,
-      select: { id: true, name: true },
+      select: {
+        id: true,
+        name: true,
+        content: true, // Not needed if we used type
+        updatedAt: true, // of {id: string, name: string}
+        createdAt: true // in LoaderData (instead of Joke[])
+      },
       orderBy: { createdAt: "desc" }
     })
   }
